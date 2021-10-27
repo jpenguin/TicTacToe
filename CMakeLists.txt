@@ -5,6 +5,5 @@ set(CMAKE_CXX_STANDARD 14)
 
 include_directories(.)
 
-add_executable(TicTacToe
-        getch.h
+add_executable(TicTacToe1
         main.cpp)

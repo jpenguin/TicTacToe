@@ -1,17 +1,12 @@
 // 4 space indent, QT style
-#include "getch.h"
 #include <iomanip>
 #include <iostream>
-#include <stdio.h>
+#include "extern/cpackets/conio.h"
 
 void drawBoard();
-
-void inputCordnates();
-
+void inputCoordinates();
 void AI();
-
 void newBoard();
-
 bool checkWin();
 
 char grid[3][3];
@@ -49,7 +44,7 @@ void drawBoard()
 	cout << "   | 0 | 1 | 2 |\n";
 
 	if (!won)
-		inputCordnates(); // player goes first
+		inputCoordinates(); // player goes first
 }
 
 void newBoard()
@@ -73,7 +68,7 @@ bool checkWin()
 	else if ((grid[2][0] == grid[2][1]) && (grid[2][1] == grid[2][2]) &&
 		(grid[2][1]) != ' ')
 		return true;
-		// collumns
+		// columns
 	else if ((grid[0][0] == grid[1][0]) && (grid[1][0] == grid[2][0]) &&
 		(grid[2][0]) != ' ')
 		return true;
@@ -83,7 +78,7 @@ bool checkWin()
 	else if ((grid[0][2] == grid[1][2]) && (grid[1][2] == grid[2][2]) &&
 		(grid[2][2]) != ' ')
 		return true;
-		// diagnal
+		// diagonal
 	else if ((grid[0][0] == grid[1][1]) && (grid[1][1] == grid[2][2]) &&
 		(grid[2][2]) != ' ')
 		return true;
@@ -94,7 +89,7 @@ bool checkWin()
 		return false;
 }
 
-void inputCordnates()
+void inputCoordinates()
 {
 	int x, y;
 	char t = 'X';

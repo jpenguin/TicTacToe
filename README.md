@@ -1,3 +1,3 @@
 # TicTacToe
 
-A console/terminal tgictactoe
+A console/terminal tictactoe game
