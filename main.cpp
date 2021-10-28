@@ -1,10 +1,12 @@
+// getch require enter/return in CLions debug console
 // 4 space indent, QT style
 #include <iomanip>
 #include <iostream>
 #include <string>
+#include <algorithm>
+#include <cstdlib>
 #include "extern/cpackets/conio.h"
 
-void newGame();
 void drawBoard(std::string playerNames[2]);
 void inputCoordinates(std::string playerNames[2]);
 void AI(std::string playerNames[2]);
@@ -13,9 +15,7 @@ bool checkWin(std::string playerNames[2]);
 void newGame(std::string playerNames[2]);
 using namespace std;
 
-char grid[3][3];
-
-string playerNames[2];
+char grid[3][3], players;
 
 short turns;
 
@@ -23,35 +23,46 @@ bool won;
 
 int main()
 {
-	char ans;
-	cout << "One or two players? (1/2)";
+	string playerNames[2];
+	int n = sizeof(playerNames) / sizeof(playerNames[0]);
+	cout << "\nOne or two players? (1/2) ";
 	do {
-		ans = getch();
+		players = getche();
 		cout << endl;
-		switch (ans) {
+		switch (players) {
 			case '1': cout << "\nPlayer one, enter you name: ";
 				getline(cin, playerNames[0]);
 				playerNames[1] = "The Computer";
 				break;
-			case '2':  //two player is NYI
+			case '2': srand(std::time(nullptr));
 				cout << "\nPlayer one, enter you name: ";
 				getline(cin, playerNames[0]);
 				cout << "\nPlayer two, enter you name: ";
 				getline(cin, playerNames[1]);
+				cout << "Randomize who goes first? (y/n)";
+				if (getch() == 'y' || getch() == 'Y')
+					random_shuffle(playerNames, playerNames + n);
+				//else
+				//	cout << "no";
 				break;
-			default: ans = 'E';
-				cout << "default";
+			default: players = 'E';
+				//cout << "default";
 				break;
 		}
-		cout << ans;
-		newGame(playerNames);
 	}
-	while (ans == 'E');
+	while (players == 'E');
+	cout << endl;
+	newGame(playerNames);
 	return 0;
 }
 
 void newGame(string playerNames[2])
 {
+#ifdef _WIN32
+	system("cls");
+#else
+	system("clear");
+#endif
 	won = false;
 	newBoard();
 	drawBoard(playerNames);
@@ -124,46 +135,51 @@ bool checkWin(string playerNames[2])
 
 	if (won) {
 		drawBoard(playerNames);
-		cout << playerNames[turns % 2] << " has won\n\nPlay again (y/n(:  ";
-		cin.ignore();
-		ans = getch();
-		if (ans == 'y' || ans == 'Y')
+		cout << playerNames[turns % 2] << " has won\n\nPlay again (y/n):  ";
+		if (getch() == 'y' || getch() == 'Y')
 			main();
-		else
+		else {
+			cout << endl;
 			exit(0);
+		}
 	}
 }
 
 void inputCoordinates(string playerNames[2])
 {
 	int x, y;
-	char t = 'X';
 	do {
 		cout << playerNames[turns % 2] << ", what square would you like (x y):  ";
 		cin >> y >> x;
 	}
 	while (grid[x][y] != ' ');
-	grid[x][y] = t;
+	if (turns % 2)
+		grid[x][y] = 'O';
+	else
+		grid[x][y] = 'X';
 
 	checkWin(playerNames);
 	turns++;
-	AI(playerNames); // random AI
+	if (players == '1')
+		AI(playerNames); // random AI
+	else
+		drawBoard(playerNames);
 }
 
 void AI(string playerNames[2])
 {
 	int x, y;
-	char t = 'O';
+	srand(std::time(nullptr));
 
 	if (grid[0][0] == ' ')
-		grid[0][0] = t;
+		grid[0][0] = 'O';
 	else {
 		do {
 			x = rand() % 3;
 			y = rand() % 3;
 		}
 		while (grid[x][y] != ' ');
-		grid[x][y] = t;
+		grid[x][y] = 'O';
 	}
 
 	(checkWin(playerNames));
