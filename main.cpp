@@ -2,6 +2,7 @@
 // 4 space indent, QT style
 #include <iomanip>
 #include <iostream>
+#include <random>
 #include <string>
 #include <algorithm>
 #include <cstdlib>
@@ -34,14 +35,14 @@ int main()
 				getline(cin, playerNames[0]);
 				playerNames[1] = "The Computer";
 				break;
-			case '2': srand(std::time(nullptr));
+			case '2':
 				cout << "\nPlayer one, enter you name: ";
 				getline(cin, playerNames[0]);
 				cout << "\nPlayer two, enter you name: ";
 				getline(cin, playerNames[1]);
 				cout << "Randomize who goes first? (y/n)";
 				if (getch() == 'y' || getch() == 'Y')
-					random_shuffle(playerNames, playerNames + n);
+					shuffle(playerNames, playerNames + n, mt19937(random_device()()));
 				//else
 				//	cout << "no";
 				break;
@@ -102,7 +103,6 @@ void newBoard()
 
 bool checkWin(string playerNames[2])
 {
-	char ans;
 	// rows
 	if ((grid[0][0] == grid[0][1]) && (grid[0][1] == grid[0][2])
 		&& (grid[0][1]) != ' ')
