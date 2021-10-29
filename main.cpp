@@ -8,15 +8,16 @@
 #include <cstdlib>
 #include "extern/cpackets/conio.h"
 
-void drawBoard(std::string playerNames[2]);
-void inputCoordinates(std::string playerNames[2]);
-void AI(std::string playerNames[2]);
-void newBoard();
-bool checkWin(std::string playerNames[2]);
-void newGame(std::string playerNames[2]);
 using namespace std;
 
-char grid[3][3], players;
+void drawBoard(string playerNames[2]);
+void inputCoordinates(string playerNames[2]);
+void AI(string playerNames[2]);
+void newBoard();
+bool checkWin(string playerNames[2]);
+void newGame(string playerNames[2]);
+
+char grid[3][3], numPayers;
 
 short turns;
 
@@ -28,9 +29,9 @@ int main()
 	int n = sizeof(playerNames) / sizeof(playerNames[0]);
 	cout << "\nOne or two players? (1/2) ";
 	do {
-		players = getche();
+		numPayers = getche();
 		cout << endl;
-		switch (players) {
+		switch (numPayers) {
 			case '1': cout << "\nPlayer one, enter you name: ";
 				getline(cin, playerNames[0]);
 				playerNames[1] = "The Computer";
@@ -46,12 +47,12 @@ int main()
 				//else
 				//	cout << "no";
 				break;
-			default: players = 'E';
+			default: numPayers = 'E';
 				//cout << "default";
 				break;
 		}
 	}
-	while (players == 'E');
+	while (numPayers == 'E');
 	cout << endl;
 	newGame(playerNames);
 	return 0;
@@ -160,7 +161,7 @@ void inputCoordinates(string playerNames[2])
 
 	checkWin(playerNames);
 	turns++;
-	if (players == '1')
+	if (numPayers == '1')
 		AI(playerNames); // random AI
 	else
 		drawBoard(playerNames);
@@ -168,15 +169,17 @@ void inputCoordinates(string playerNames[2])
 
 void AI(string playerNames[2])
 {
-	int x, y;
-	srand(std::time(nullptr));
+	unsigned x, y;
 
 	if (grid[0][0] == ' ')
 		grid[0][0] = 'O';
 	else {
 		do {
-			x = rand() % 3;
-			y = rand() % 3;
+			random_device dev;
+			mt19937 rng(dev());
+			uniform_int_distribution<mt19937::result_type> mark(0,2);
+			x = mark(rng);
+			y = mark(rng);
 		}
 		while (grid[x][y] != ' ');
 		grid[x][y] = 'O';
