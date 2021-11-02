@@ -95,9 +95,10 @@ void drawBoard(string playerNames[2])
 
 void newBoard()
 {
-	for (int a = 0; a < 3; a++) {
-		for (int b = 0; b < 3; b++) {
-			grid[a][b] = ' ';
+	// for (int a = 0; a < 3; a++) {
+	for (auto & a : grid) {
+		for (char & b : a) {
+			b = ' ';
 		}
 	}
 }
