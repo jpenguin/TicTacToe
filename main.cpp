@@ -16,6 +16,7 @@ void AI(string playerNames[2]);
 void newBoard();
 bool checkWin(string playerNames[2]);
 void newGame(string playerNames[2]);
+void clrscn();
 
 char grid[3][3], numPayers;
 
@@ -36,8 +37,7 @@ int main()
 				getline(cin, playerNames[0]);
 				playerNames[1] = "The Computer";
 				break;
-			case '2':
-				cout << "\nPlayer one, enter you name: ";
+			case '2': cout << "\nPlayer one, enter you name: ";
 				getline(cin, playerNames[0]);
 				cout << "\nPlayer two, enter you name: ";
 				getline(cin, playerNames[1]);
@@ -60,22 +60,15 @@ int main()
 
 void newGame(string playerNames[2])
 {
-#ifdef _WIN32
-	system("cls");
-#else
-	system("clear");
-#endif
+	clrscn();
 	won = false;
+	turns = 0;
 	newBoard();
 	drawBoard(playerNames);
 }
 void drawBoard(string playerNames[2])
 {
-#ifdef _WIN32
-	system("cls");
-#else
-	system("clear");
-#endif
+	clrscn();
 
 	cout << "---+---+---+---|\n";
 	cout << "2  |" << setw(3) << grid[2][0] << "|" << setw(3) << grid[2][1]
@@ -96,8 +89,8 @@ void drawBoard(string playerNames[2])
 void newBoard()
 {
 	// for (int a = 0; a < 3; a++) {
-	for (auto & a : grid) {
-		for (char & b : a) {
+	for (auto &a: grid) {
+		for (char &b: a) {
 			b = ' ';
 		}
 	}
@@ -105,6 +98,7 @@ void newBoard()
 
 bool checkWin(string playerNames[2])
 {
+	char again;
 	// rows
 	if ((grid[0][0] == grid[0][1]) && (grid[0][1] == grid[0][2])
 		&& (grid[0][1]) != ' ')
@@ -132,13 +126,29 @@ bool checkWin(string playerNames[2])
 	else if ((grid[2][0] == grid[1][1]) && (grid[1][1] == grid[0][2])
 		&& (grid[0][2]) != ' ')
 		won = true;
+	else if (turns == 8) {
+		won = true;
+		drawBoard(playerNames);
+		cout << "Draw\nPlay again (y/n):  ";
+		cin.ignore();
+		again = getch();
+		if (again == 'y' || again == 'Y')
+			main();
+		else {
+			cout << endl;
+			exit(0);
+		}
+	}
 	else
 		return false;
 
 	if (won) {
 		drawBoard(playerNames);
+
 		cout << playerNames[turns % 2] << " has won\n\nPlay again (y/n):  ";
-		if (getch() == 'y' || getch() == 'Y')
+		cin.ignore();
+		again = getch();
+		if (again == 'y' || again == 'Y')
 			main();
 		else {
 			cout << endl;
@@ -172,21 +182,30 @@ void AI(string playerNames[2])
 {
 	unsigned x, y;
 
-	if (grid[0][0] == ' ')
-		grid[0][0] = 'O';
-	else {
-		do {
-			random_device dev;
-			mt19937 rng(dev());
-			uniform_int_distribution<mt19937::result_type> mark(0,2);
-			x = mark(rng);
-			y = mark(rng);
-		}
-		while (grid[x][y] != ' ');
-		grid[x][y] = 'O';
+	//if (grid[0][0] == ' ')
+	//	grid[0][0] = 'O';
+	//else {
+	do {
+		random_device dev;
+		mt19937 rng(dev());
+		uniform_int_distribution<mt19937::result_type> mark(0, 2);
+		x = mark(rng);
+		y = mark(rng);
 	}
+	while (grid[x][y] != ' ');
+	grid[x][y] = 'O';
+	//}
 
 	(checkWin(playerNames));
 	turns++;
 	drawBoard(playerNames); // Draw board before players next turn
+}
+
+void clrscn()
+{
+#ifdef _WIN32
+	system("cls");
+#else
+	system("clear");
+#endif
 }
