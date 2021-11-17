@@ -1,4 +1,4 @@
-// getch require enter/return in CLions debug console
+// getch does not work properly in CLions debug console
 // 4 space indent, QT style
 #include <iomanip>
 #include <iostream>
@@ -6,17 +6,17 @@
 #include <string>
 #include <algorithm>
 #include <cstdlib>
-#include "extern/cpackets/conio.h"
+#include "conio.h"
 
 using namespace std;
 
 void drawBoard(string playerNames[2]);
 void inputCoordinates(string playerNames[2]);
-void AI(string playerNames[2]);
-void newBoard();
+void randomAI(string playerNames[2]);
+void clearBoard();
 bool checkWin(string playerNames[2]);
 void newGame(string playerNames[2]);
-void clrscn();
+void clearScreen();
 
 char grid[3][3], numPayers;
 
@@ -60,15 +60,15 @@ int main()
 
 void newGame(string playerNames[2])
 {
-	clrscn();
+	clrscr();
 	won = false;
 	turns = 0;
-	newBoard();
+        clearBoard();
 	drawBoard(playerNames);
 }
 void drawBoard(string playerNames[2])
 {
-	clrscn();
+    clearScreen();
 
 	cout << "---+---+---+---|\n";
 	cout << "2  |" << setw(3) << grid[2][0] << "|" << setw(3) << grid[2][1]
@@ -86,7 +86,7 @@ void drawBoard(string playerNames[2])
 		inputCoordinates(playerNames); // player goes first
 }
 
-void newBoard()
+void clearBoard()
 {
 	// for (int a = 0; a < 3; a++) {
 	for (auto &a: grid) {
@@ -98,7 +98,7 @@ void newBoard()
 
 bool checkWin(string playerNames[2])
 {
-	char again;
+	char playAgain;
 	// rows
 	if ((grid[0][0] == grid[0][1]) && (grid[0][1] == grid[0][2])
 		&& (grid[0][1]) != ' ')
@@ -131,8 +131,8 @@ bool checkWin(string playerNames[2])
 		drawBoard(playerNames);
 		cout << "Draw\nPlay again (y/n):  ";
 		cin.ignore();
-		again = getch();
-		if (again == 'y' || again == 'Y')
+                playAgain = getch();
+		if (playAgain == 'y' || playAgain == 'Y')
 			main();
 		else {
 			cout << endl;
@@ -147,8 +147,8 @@ bool checkWin(string playerNames[2])
 
 		cout << playerNames[turns % 2] << " has won\n\nPlay again (y/n):  ";
 		cin.ignore();
-		again = getch();
-		if (again == 'y' || again == 'Y')
+                playAgain = getch();
+		if (playAgain == 'y' || playAgain == 'Y')
 			main();
 		else {
 			cout << endl;
@@ -173,12 +173,12 @@ void inputCoordinates(string playerNames[2])
 	checkWin(playerNames);
 	turns++;
 	if (numPayers == '1')
-		AI(playerNames); // random AI
+            randomAI(playerNames); // random randomAI
 	else
 		drawBoard(playerNames);
 }
 
-void AI(string playerNames[2])
+void randomAI(string playerNames[2])
 {
 	unsigned x, y;
 
@@ -201,7 +201,7 @@ void AI(string playerNames[2])
 	drawBoard(playerNames); // Draw board before players next turn
 }
 
-void clrscn()
+void clearScreen()
 {
 #ifdef _WIN32
 	system("cls");
