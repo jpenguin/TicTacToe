@@ -23,6 +23,18 @@ char grid[3][3];
 
 short turns;
 
+template<typename T, typename U>
+bool allEqual(const T &t, const U &u)
+{
+    return t == u;
+}
+
+template<typename T, typename U, typename... Others>
+bool allEqual(const T &t, const U &u, Others const &...args)
+{
+    return (t == u) && allEqual(u, args...);
+}
+
 int main()
 {
     string playerNames[2];
@@ -134,13 +146,22 @@ void clearBoard()
 bool gameOver()
 {
     // rows
-    if ((grid[0][0] == grid[0][1]) && (grid[0][1] == grid[0][2]) && (grid[0][1]) != ' ') {
+    if (allEqual(grid[0][0], grid[0][1], grid[0][2], 'X')
+        || allEqual(grid[0][0], grid[0][1], grid[0][2], 'O'))
+        return true;
+    else if (allEqual(grid[1][0], grid[1][1], grid[1][2], 'X')
+             || allEqual(grid[1][0], grid[1][1], grid[1][2], 'O'))
+        return true;
+    else if (allEqual(grid[2][0], grid[2][1], grid[2][2], 'X')
+             || allEqual(grid[2][0], grid[2][1], grid[2][2], 'O'))
+        return true;
+    /*if ((grid[0][0] == grid[0][1]) && (grid[0][1] == grid[0][2]) && (grid[0][1]) != ' ') {
         return true;
     } else if ((grid[1][0] == grid[1][1]) && (grid[1][1] == grid[1][2]) && (grid[1][1]) != ' ') {
         return true;
     } else if ((grid[2][0] == grid[2][1]) && (grid[2][1] == grid[2][2]) && (grid[2][1]) != ' ') {
         return true;
-    }
+    }*/
     // columns
     else if ((grid[0][0] == grid[1][0]) && (grid[1][0] == grid[2][0]) && (grid[2][0]) != ' ') {
         return true;
@@ -150,11 +171,17 @@ bool gameOver()
         return true;
     }
     // diagonal
-    else if ((grid[0][0] == grid[1][1]) && (grid[1][1] == grid[2][2]) && (grid[2][2]) != ' ') {
+    else if (allEqual(grid[0][0], grid[1][1], grid[2][2], 'X')
+             || allEqual(grid[0][0], grid[1][1], grid[2][2], 'O'))
         return true;
-    } else if ((grid[2][0] == grid[1][1]) && (grid[1][1] == grid[0][2]) && (grid[0][2]) != ' ') {
+    else if (allEqual(grid[2][0], grid[1][1], grid[0][2], 'X')
+             || allEqual(grid[2][0], grid[1][1], grid[0][2], 'O'))
         return true;
-    } else if (turns > 7)
+    /*else if ((grid[0][0] == grid[1][1]) && (grid[1][1] == grid[2][2]) && (grid[2][2]) != ' ')
+        return true;
+    else if ((grid[2][0] == grid[1][1]) && (grid[1][1] == grid[0][2]) && (grid[0][2]) != ' ')
+        return true;*/
+    else if (turns > 7)
         return true;
 
     return false;
