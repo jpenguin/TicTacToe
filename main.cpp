@@ -23,6 +23,8 @@ char grid[3][3];
 
 short turns;
 
+// AllEqual function from https://stackoverflow.com/a/8198279
+// CC BY-SA 3.0, Steve Jessop- 2011
 template<typename T, typename U>
 bool allEqual(const T &t, const U &u)
 {
@@ -163,13 +165,22 @@ bool gameOver()
         return true;
     }*/
     // columns
-    else if ((grid[0][0] == grid[1][0]) && (grid[1][0] == grid[2][0]) && (grid[2][0]) != ' ') {
+    if (allEqual(grid[0][0], grid[1][0], grid[2][0], 'X')
+        || allEqual(grid[0][0], grid[1][0], grid[2][0], 'O'))
+        return true;
+    else if (allEqual(grid[0][1], grid[1][1], grid[2][1], 'X')
+             || allEqual(grid[0][1], grid[1][1], grid[2][1], 'O'))
+        return true;
+    else if (allEqual(grid[0][2], grid[1][2], grid[2][2], 'X')
+             || allEqual(grid[0][2], grid[1][2], grid[2][2], 'O'))
+        return true;
+    /*else if ((grid[0][0] == grid[1][0]) && (grid[1][0] == grid[2][0]) && (grid[2][0]) != ' ') {
         return true;
     } else if ((grid[0][1] == grid[1][1]) && (grid[1][1] == grid[2][1]) && (grid[2][1]) != ' ') {
         return true;
     } else if ((grid[0][2] == grid[1][2]) && (grid[1][2] == grid[2][2]) && (grid[2][2]) != ' ') {
         return true;
-    }
+    }*/
     // diagonal
     else if (allEqual(grid[0][0], grid[1][1], grid[2][2], 'X')
              || allEqual(grid[0][0], grid[1][1], grid[2][2], 'O'))
