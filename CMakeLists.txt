@@ -3,7 +3,7 @@ project(TicTacToe)
 
 set(CMAKE_CXX_STANDARD 14)
 
-include_directories(extern/cpackets)
+include_directories(extern)
 include_directories(.)
 
 add_executable(TicTacToe
