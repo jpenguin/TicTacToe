@@ -1,6 +1,3 @@
 [submodule "extern/conio"]
 	path = extern/conio
 	url = https://github.com/marufjs/conio.h.git
-[submodule "extern/cpaclets"]
-	path = extern/cpaclets
-	url = https://github.com/zoelabbb/conio.h.git
