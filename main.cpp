@@ -6,7 +6,7 @@
 #include <string>
 #include <algorithm>
 #include <cstdlib>
-#include "cpackets/conio.h"
+#include "conio.h"
 
 using namespace std;
 
@@ -85,16 +85,16 @@ void newGame(string playerNames[2])
 void nextTurn(string playerNames[2])
 {
     drawBoard();
+    cout << turns;
 
     if (playerNames[turns % 2].compare("The Computer") == 0)
         randomAI();
     else
         inputCoordinates(playerNames); // player goes first
-
+    turns++;
     if (gameOver()) {
         drawBoard();
-        if (turns == 8) {
-            nextTurn(playerNames);
+        if (turns == 9) {
             cout << "Draw\nPlay again (y/n):  ";
             cin.ignore();
             if (getch() == 'y' || getch() == 'Y')
@@ -114,7 +114,7 @@ void nextTurn(string playerNames[2])
             }
         }
     }
-    turns++;
+
     nextTurn(playerNames);
 }
 
@@ -157,15 +157,8 @@ bool gameOver()
     else if (allEqual(grid[2][0], grid[2][1], grid[2][2], 'X')
              || allEqual(grid[2][0], grid[2][1], grid[2][2], 'O'))
         return true;
-    /*if ((grid[0][0] == grid[0][1]) && (grid[0][1] == grid[0][2]) && (grid[0][1]) != ' ') {
-        return true;
-    } else if ((grid[1][0] == grid[1][1]) && (grid[1][1] == grid[1][2]) && (grid[1][1]) != ' ') {
-        return true;
-    } else if ((grid[2][0] == grid[2][1]) && (grid[2][1] == grid[2][2]) && (grid[2][1]) != ' ') {
-        return true;
-    }*/
     // columns
-    if (allEqual(grid[0][0], grid[1][0], grid[2][0], 'X')
+    else if (allEqual(grid[0][0], grid[1][0], grid[2][0], 'X')
         || allEqual(grid[0][0], grid[1][0], grid[2][0], 'O'))
         return true;
     else if (allEqual(grid[0][1], grid[1][1], grid[2][1], 'X')
@@ -174,13 +167,6 @@ bool gameOver()
     else if (allEqual(grid[0][2], grid[1][2], grid[2][2], 'X')
              || allEqual(grid[0][2], grid[1][2], grid[2][2], 'O'))
         return true;
-    /*else if ((grid[0][0] == grid[1][0]) && (grid[1][0] == grid[2][0]) && (grid[2][0]) != ' ') {
-        return true;
-    } else if ((grid[0][1] == grid[1][1]) && (grid[1][1] == grid[2][1]) && (grid[2][1]) != ' ') {
-        return true;
-    } else if ((grid[0][2] == grid[1][2]) && (grid[1][2] == grid[2][2]) && (grid[2][2]) != ' ') {
-        return true;
-    }*/
     // diagonal
     else if (allEqual(grid[0][0], grid[1][1], grid[2][2], 'X')
              || allEqual(grid[0][0], grid[1][1], grid[2][2], 'O'))
@@ -188,13 +174,9 @@ bool gameOver()
     else if (allEqual(grid[2][0], grid[1][1], grid[0][2], 'X')
              || allEqual(grid[2][0], grid[1][1], grid[0][2], 'O'))
         return true;
-    /*else if ((grid[0][0] == grid[1][1]) && (grid[1][1] == grid[2][2]) && (grid[2][2]) != ' ')
-        return true;
-    else if ((grid[2][0] == grid[1][1]) && (grid[1][1] == grid[0][2]) && (grid[0][2]) != ' ')
-        return true;*/
-    else if (turns > 7)
-        return true;
-
+    else if (turns == 9)
+            return true;
+else
     return false;
 }
 

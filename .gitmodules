@@ -1,3 +1,6 @@
-[submodule "extern/cpackets"]
-	path = extern/cpackets
-	url = https://github.com/ramadhinolfski-zz/cpackets.git
+[submodule "extern/conio"]
+	path = extern/conio
+	url = https://github.com/marufjs/conio.h.git
+[submodule "extern/cpaclets"]
+	path = extern/cpaclets
+	url = https://github.com/zoelabbb/conio.h.git
